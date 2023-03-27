@@ -5,7 +5,7 @@ namespace CleanArch.Data.Context
 {
     public class ProductDBContext : DbContext
     {
-        public ProductDBContext(DbContextOptions options) : base(options)
+        public ProductDBContext(DbContextOptions<ProductDBContext> options) : base(options)
         {
         }
         public DbSet<Product> Product { get; set; }

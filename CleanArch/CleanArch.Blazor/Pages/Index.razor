@@ -4,6 +4,8 @@
 @using CleanArch.Application.ViewModels
 @inject ProductService service;
 
+<AuthorizeView>
+ <Authorized>
 <div class="container">
     <div class="row bg-light">
         <table class="table table-bordered">
@@ -38,6 +40,11 @@
         </table>
     </div>
 </div>
+</Authorized>
+<NotAuthorized>
+    you are not allowed to view please login first
+</NotAuthorized>
+</AuthorizeView>
 @code {
     ProductViewModel ProductViewModel = new ProductViewModel();
     protected override async Task OnInitializedAsync()

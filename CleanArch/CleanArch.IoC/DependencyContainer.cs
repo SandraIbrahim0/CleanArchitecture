@@ -5,6 +5,7 @@ using CleanArch.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 
+
 namespace CleanArch.IoC
 {
     //Cross Cutting // cross Function that connect all the projects with each other
@@ -18,6 +19,8 @@ namespace CleanArch.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddScoped<ProductService>();
+
+
 
         }
     }

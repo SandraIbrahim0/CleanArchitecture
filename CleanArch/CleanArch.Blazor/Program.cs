@@ -1,5 +1,8 @@
+using CleanArch.Blazor.Areas.Identity;
 using CleanArch.Data.Context;
 using CleanArch.IoC;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +16,14 @@ builder.Services.AddDbContext<ProductDBContext>(options =>
     options.UseSqlite("Data Source = Products.db");
 });
 
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+{
+    options.UseSqlite("Data Source = Identity.db");
+});
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultUI().AddDefaultTokenProviders();
 DependencyContainer.RegisterServices(builder.Services);
+builder.Services.AddScoped<TokenProvider>();
+//builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
@@ -30,6 +40,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
