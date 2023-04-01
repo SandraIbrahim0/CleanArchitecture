@@ -2,7 +2,6 @@ using CleanArch.Blazor.Areas.Identity;
 using CleanArch.Data.Context;
 using CleanArch.IoC;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

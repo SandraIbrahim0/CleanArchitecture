@@ -12,6 +12,12 @@ namespace CleanArch.Data.Repository
             _ctx = productDBContext;
         }
 
+        public void Add(Product product)
+        {
+            _ctx.Add(product);
+            _ctx.SaveChanges();
+        }
+
         public async Task<IEnumerable<Product>> Get()
         {
             return  _ctx.Product;

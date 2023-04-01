@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CleanArch.Data\CleanArch.Data.csproj" />
     <ProjectReference Include="..\CleanArch.IoC\CleanArch.IoC.csproj" />
   </ItemGroup>
 
