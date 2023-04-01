@@ -1,7 +1,6 @@
 using CleanArch.Data.Context;
 using CleanArch.IoC;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductDBContext>(options =>
 {
-    options.UseSqlite("Data Source = Products.db");
+    options.UseSqlite(builder.Configuration.GetConnectionString("SqliteDatabaseConnection"));
 });
 DependencyContainer.RegisterServices(builder.Services);
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 var app = builder.Build();
 

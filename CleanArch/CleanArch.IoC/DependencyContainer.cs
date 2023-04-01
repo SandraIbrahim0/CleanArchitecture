@@ -9,8 +9,7 @@ using CleanArch.Domain.Interfaces;
 using CleanArch.Infra.Bus;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-
-
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 
 namespace CleanArch.IoC
 {
@@ -33,7 +32,7 @@ namespace CleanArch.IoC
             services.AddScoped<ProductService>();
             services.AddScoped<ProductDBContext>();
 
-
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
         }
     }
 }

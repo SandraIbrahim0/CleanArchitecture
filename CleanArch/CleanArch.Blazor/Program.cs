@@ -12,7 +12,7 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<ProductDBContext>(options =>
 {
-    options.UseSqlite("Data Source = Products.db");
+    options.UseSqlite(builder.Configuration.GetConnectionString("SqliteDatabaseConnection"));
 });
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
