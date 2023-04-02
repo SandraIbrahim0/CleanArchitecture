@@ -2,6 +2,7 @@
 @*@using CleanArch.Application.Interfaces*@
 @using CleanArch.Application.Services
 @using CleanArch.Application.ViewModels
+@using AutoMapper.QueryableExtensions;
 @inject ProductService service;
 
 <AuthorizeView>
@@ -19,9 +20,9 @@
                 </tr>
             </thead>
             <tbody>
-                @if (ProductViewModel.Products.Any())
+                @if (ProductViewModel.Any())
                 {
-                    @foreach (var product in ProductViewModel.Products)
+                    @foreach (var product in ProductViewModel)
                     {
                         <tr>
                             <td>@product.Id</td>
@@ -46,14 +47,15 @@
 </NotAuthorized>
 </AuthorizeView>
 @code {
-    ProductViewModel ProductViewModel = new ProductViewModel();
+    List<ProductViewModel> ProductViewModel = new List<ProductViewModel>();
     protected override async Task OnInitializedAsync()
     {
         await RefreshProducts();
     }
     private async Task RefreshProducts()
     {
-        ProductViewModel = await service.Get();
+        var result = await service.Get();
+        ProductViewModel = result.ToList();
     }
   
 }

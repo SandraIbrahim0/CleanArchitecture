@@ -9,8 +9,9 @@ namespace CleanArch.Domain.Commands
 {
     public class CreateProductCommand : ProductCommand
     {
-        public CreateProductCommand(string name, string description, int quantity, float price)
+        public CreateProductCommand(int id, string name, string description, int quantity, double price)
         {
+            Id = id;
             Name = name;
             Description = description;
             Quantity = quantity;

@@ -1,4 +1,6 @@
-﻿using CleanArch.Application.Interfaces;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CleanArch.Application.Interfaces;
 using CleanArch.Application.ViewModels;
 using CleanArch.Domain.Commands;
 using CleanArch.Domain.Core.Bus;
@@ -10,21 +12,25 @@ namespace CleanArch.Application.Services
     {
         private readonly IProductRepository productRepository;
         private readonly IMediatorHandler mediatorHandler;
-        public ProductService(IProductRepository productRepository, IMediatorHandler mediatorHandler)
+        private readonly IMapper mapper;
+        public ProductService(IProductRepository productRepository, IMediatorHandler mediatorHandler, IMapper mapper)
         {
             this.productRepository = productRepository;
             this.mediatorHandler = mediatorHandler;
+            this.mapper = mapper;
         }
 
         public void CreateProduct(ProductViewModel productViewModel)
         {
-            var createProductCommand = new CreateProductCommand(productViewModel.Name, productViewModel.Description, productViewModel.Quantity, productViewModel.Price);
+            var createProductCommand = mapper.Map<CreateProductCommand>(productViewModel);
+
             mediatorHandler.SendCommand(createProductCommand);
         }
 
-        public async Task<ProductViewModel> Get()
+        public async Task<IEnumerable<ProductViewModel>> Get()
         {
-            return new ProductViewModel { Products = await productRepository.Get() };
+            var result = await productRepository.Get();
+            return result.ProjectTo<ProductViewModel>(mapper.ConfigurationProvider);
         }
     }
 }

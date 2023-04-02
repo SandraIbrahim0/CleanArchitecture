@@ -1,6 +1,7 @@
 ﻿using CleanArch.Data.Context;
 using CleanArch.Domain.Interfaces;
 using CleanArch.Domain.Models;
+using System.Linq;
 
 namespace CleanArch.Data.Repository
 {
@@ -18,7 +19,7 @@ namespace CleanArch.Data.Repository
             _ctx.SaveChanges();
         }
 
-        public async Task<IEnumerable<Product>> Get()
+        public async Task<IQueryable<Product>> Get()
         {
             return  _ctx.Product;
         }

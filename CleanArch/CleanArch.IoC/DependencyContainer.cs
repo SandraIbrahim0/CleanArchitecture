@@ -1,4 +1,5 @@
-﻿using CleanArch.Application.Interfaces;
+﻿using CleanArch.Application.AutoMapper;
+using CleanArch.Application.Interfaces;
 using CleanArch.Application.Services;
 using CleanArch.Data.Context;
 using CleanArch.Data.Repository;
@@ -14,7 +15,7 @@ using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 namespace CleanArch.IoC
 {
     //Cross Cutting // cross Function that connect all the projects with each other
-    public class DependencyContainer
+    public static class DependencyContainer
     {
         public static void RegisterServices(IServiceCollection services)
         {
@@ -33,6 +34,12 @@ namespace CleanArch.IoC
             services.AddScoped<ProductDBContext>();
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+        }
+
+        public static void RegisterAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(CleanArch.Application.AutoMapper.AutoMapperConfiguration));
+            AutoMapperConfiguration.RegisterMappings();
         }
     }
 }
