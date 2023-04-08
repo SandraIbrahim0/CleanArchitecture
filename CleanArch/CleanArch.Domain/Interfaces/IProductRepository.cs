@@ -6,5 +6,8 @@ namespace CleanArch.Domain.Interfaces
     {
         Task<IQueryable<Product>> Get();
         void Add(Product product);
+        Task<Product> GetProductById(int Id);
+        Task DeleteProductById(int Id);
+        Task EditProduct(Product product);
     }
 }

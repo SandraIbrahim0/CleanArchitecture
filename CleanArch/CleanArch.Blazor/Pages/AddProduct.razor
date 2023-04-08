@@ -1,0 +1,84 @@
+﻿@page "/AddProduct"
+@page "/AddProduct/{Id:int}"
+@using CleanArch.Application.ViewModels;
+@inject HttpClient Http
+@inject Microsoft.AspNetCore.Components.NavigationManager navigation
+<AuthorizeView>
+    <Authorized>
+        <EditForm Context="Auth" Model="@product" OnValidSubmit="Save">
+            <h3>@Title Product</h3>
+            <hr />
+            <div class="form-group row">
+                <label hidden for="Id" class="col-sm-2 col-form-label">Id </label>
+                <div class="col-sm-10 multiline">
+                    <InputNumber hidden id="Id" class="form-control" @bind-Value="product.Id" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Name" class="col-sm-2 col-form-label">Name </label>
+                <div class="col-sm-10">
+                    <InputText id="Name" class="form-control" placeholder="Name" @bind-Value="product.Name" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Description" class="col-sm-2 col-form-label">Description </label>
+                <div class="col-sm-10">
+                    <InputText id="Description" class="form-control" placeholder="Description" @bind-Value="product.Description" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Price" class="col-sm-2 col-form-label">Price </label>
+                <div class="col-sm-10">
+                    <InputNumber id="Price" class="form-control" placeholder="Price" @bind-Value="product.Price" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Quantity" class="col-sm-2 col-form-label">Quantity </label>
+                <div class="col-sm-10">
+                    <InputNumber id="Quantity" class="form-control" placeholder="Quantity" @bind-Value="product.Quantity" />
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button class="btn btn-light" @onclick="Cancel">Cancel</button>
+            </div>
+        </EditForm>
+    </Authorized>
+    <NotAuthorized>
+        you are not allowed to view please login first
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    protected string Title = "Add";
+    ProductViewModel product = new ProductViewModel();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            Title = "Edit";
+            product = await Http.GetFromJsonAsync<ProductViewModel>("https://localhost:7119/Product/GetById?Id=" + Id);
+        }
+    }
+
+    protected async Task Save()
+    {
+        if (Id != 0)
+        {
+            await Http.PutAsJsonAsync<ProductViewModel>("https://localhost:7119/Product", product);
+        }
+        else
+        {
+            await Http.PostAsJsonAsync<ProductViewModel>("https://localhost:7119/Product", product);
+        }
+
+        Cancel();
+    }
+
+    void Cancel()
+    {
+        navigation.NavigateTo("/");
+    }
+}

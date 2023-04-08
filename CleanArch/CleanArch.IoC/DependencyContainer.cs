@@ -34,6 +34,7 @@ namespace CleanArch.IoC
             services.AddScoped<ProductDBContext>();
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+            services.AddHttpClient();
         }
 
         public static void RegisterAutoMapper(this IServiceCollection services)

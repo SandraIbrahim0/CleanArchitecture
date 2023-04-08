@@ -13,7 +13,7 @@ namespace CleanArch.Application.AutoMapper
     {
         public DomainProfileToViewModel()
         {
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, ProductViewModel>().ReverseMap();
         }
     }
 }
