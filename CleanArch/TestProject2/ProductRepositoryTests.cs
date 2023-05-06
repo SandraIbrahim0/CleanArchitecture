@@ -1,7 +1,9 @@
 using Application.Test.MockData;
 using CleanArch.Data.Context;
 using CleanArch.Data.Repository;
+using CleanArch.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ProductRepositoryTests
@@ -25,6 +27,22 @@ namespace ProductRepositoryTests
 
             //Assert
             Assert.Equal<int>(2, count);
+        }
+
+        [Fact]
+        public async void Should_Save_Product()
+        {
+            var dbOptions = new DbContextOptionsBuilder<ProductDBContext>().UseInMemoryDatabase("DatabaseTest").Options;
+            using var context = new ProductDBContext(dbOptions);
+
+            var product = new Product { Description = "Description test1", Id = 1, Name = "Name Test1", Price = 1000, Quantity = 1 };
+
+            var repo = new ProductRepository(context);
+            repo.Add(product);
+
+            var products = await repo.Get();
+            var productsContextList = await context.Product.ToListAsync();
+            var productSingle = Assert.Single<Product>(productsContextList);
         }
     }
 }

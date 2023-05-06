@@ -14,10 +14,6 @@ namespace Application.Test
 {
     public class ProductServiceTests
     {
-        public ProductServiceTests()
-        {
-
-        }
 
         [Fact]
         public async Task Should_Return_Product_ListAsync()
@@ -34,6 +30,25 @@ namespace Application.Test
 
             //Assert
             Assert.Equal(2, productsResult?.Count);
+        }
+
+        [Fact]
+        public async Task Should_Save_Product()
+        {
+            //Arrange
+            var productService = new Mock<IProductService>();
+            var loggerService = new Mock<ILogger<ProductController>>();
+            var productController = new ProductController(loggerService.Object, productService.Object);
+
+            var productViewModel = new ProductViewModel { Description = "Product_Test_Description", Id = 1, Name = "Product_Test", Price = 200.5, Quantity = 2 };
+
+            productService.Setup(x => x.CreateProduct(productViewModel));
+
+            // Act
+            var result = (OkObjectResult)productController.CreateProduct(productViewModel);
+
+            //Assert
+            Assert.Equal<int>(200, result.StatusCode.Value);
         }
     }
 }
