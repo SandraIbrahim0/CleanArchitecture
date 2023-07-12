@@ -7,6 +7,7 @@ using CleanArch.Domain.Commands;
 using CleanArch.Domain.CommandsHandlers;
 using CleanArch.Domain.Core.Bus;
 using CleanArch.Domain.Interfaces;
+using CleanArch.Grapghql.Query;
 using CleanArch.Infra.Bus;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,8 @@ namespace CleanArch.IoC
 
             services.AddScoped<ProductService>();
             services.AddScoped<ProductDBContext>();
+            services.AddScoped<ProductQuery>();
+            services.AddScoped<ProductMutation>();
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
             services.AddHttpClient();

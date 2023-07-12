@@ -1,6 +1,8 @@
 using CleanArch.Data.Context;
+using CleanArch.Grapghql.Query;
 using CleanArch.IoC;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +13,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterAutoMapper();
+
 builder.Services.AddDbContext<ProductDBContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("SqliteDatabaseConnection"));
-});
+}, optionsLifetime: ServiceLifetime.Scoped);
+
 DependencyContainer.RegisterServices(builder.Services);
+
+builder.Services.AddGraphQLServer().AddQueryType<ProductQuery>().AddMutationType<ProductMutation>();
 
 var app = builder.Build();
 
@@ -31,5 +37,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGraphQL(path: "/graphql");
 
 app.Run();
